@@ -12,7 +12,9 @@ const booking = async (req, res, next) => {
 
 const getBookings = async (req, res, next) => {
   try {
-    const getBookings = await bookings.find()
+    const getBookings = await bookings
+      .find()
+      .populate('userId', ['name', 'contact'])
     res.status(200).json(getBookings)
   } catch (error) {
     res.status(511).send(error.message)
@@ -21,8 +23,9 @@ const getBookings = async (req, res, next) => {
 
 const getBooking = async (req, res, next) => {
   try {
-    const getB = await bookings.findOne({ _id: req.params.id })
-    //   .populate('userId', ['name', 'contact'])
+    const getB = await bookings
+      .findOne({ _id: req.params.id })
+      .populate('userId', ['name', 'contact'])
     if (!getB) return res.json({ msg: 'No bookings for this userId.' })
     res.status(200).json(getB)
   } catch (error) {
